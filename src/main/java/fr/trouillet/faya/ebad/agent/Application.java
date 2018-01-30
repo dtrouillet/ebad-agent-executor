@@ -21,8 +21,7 @@ public class Application {
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
-        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory("admin", "admin", "tcp://192.168.242.130:61616");
-        return activeMQConnectionFactory;
+        return new ActiveMQConnectionFactory("admin", "admin", "tcp://192.168.242.130:61616");
     }
 
     @Bean
