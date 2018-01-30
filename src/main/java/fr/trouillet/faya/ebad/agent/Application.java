@@ -20,24 +20,13 @@ import org.springframework.jms.support.converter.MessageType;
 public class Application {
 
     @Bean
-    public ActiveMQConnectionFactory activeMQConnectionFactory(){
-        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory("admin","admin","tcp://192.168.242.130:61616");
+    public ActiveMQConnectionFactory activeMQConnectionFactory() {
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory("admin", "admin", "tcp://192.168.242.130:61616");
         return activeMQConnectionFactory;
     }
 
-//    @Bean
-//    public CachingConnectionFactory cachingConnectionFactory(){
-//        return new CachingConnectionFactory(activeMQConnectionFactory());
-//    }
-
-//    @Bean
-//    public JmsTemplate jmsTemplate(){
-//        return new JmsTemplate(activeMQConnectionFactory());
-//    }
-
     @Bean
-    public JmsListenerContainerFactory<?> myFactory(ActiveMQConnectionFactory activeMQConnectionFactory,
-                                                    DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public JmsListenerContainerFactory<?> myFactory(ActiveMQConnectionFactory activeMQConnectionFactory, DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         // This provides all boot's default to this factory, including the message converter
         configurer.configure(factory, activeMQConnectionFactory);
@@ -63,12 +52,12 @@ public class Application {
         System.out.println("Sending an email message.");
 
         AgentInfos agentInfos = new AgentInfos();
-        String[] app = {"er2","eb1"};
+        String[] app = {"er2", "eb1"};
         agentInfos.setApplications(app);
         agentInfos.setEnvironment("int");
         agentInfos.setHost("dlj2eedeva51021");
         agentInfos.setName("agent-1.0-SNAPSHOT");
-        jmsTemplate.convertAndSend("agent",agentInfos);
+        jmsTemplate.convertAndSend("agent", agentInfos);
     }
 
 }
