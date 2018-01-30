@@ -39,6 +39,14 @@
             <artifactId>lombok</artifactId>
             <version>1.16.20</version>
         </dependency>
+
+        <!-- Ebad Dependencies -->
+        <dependency>
+            <groupId>fr.trouillet.faya.ebad</groupId>
+            <artifactId>ebad-parent</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>
