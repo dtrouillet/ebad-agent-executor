@@ -1,0 +1,8 @@
+activemq:
+  broker-url: tcp://localhost:61616
+  broker-user: admin
+  broker-password: admin
+
+spring:
+logging.level:
+    fr.trouillet.faya.ebad.agent: DEBUG

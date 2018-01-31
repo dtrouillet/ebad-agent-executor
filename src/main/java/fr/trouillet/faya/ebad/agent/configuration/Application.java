@@ -1,6 +1,12 @@
-package fr.trouillet.faya.ebad.agent;
+package fr.trouillet.faya.ebad.agent.configuration;
 
+import fr.trouillet.faya.ebad.agent.discovery.DiscoveryService;
+import fr.trouillet.faya.ebad.agent.discovery.UnixDiscoveryService;
+import fr.trouillet.faya.ebad.agent.discovery.WindowsDiscoveryService;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
@@ -14,14 +20,24 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"fr.trouillet.faya.ebad.agent"})
 @EnableJms
 @EnableScheduling
 public class Application {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+
+    @Value("${activemq.broker-url}")
+    private String brokerUrl;
+
+    @Value("${activemq.broker-user}")
+    private String brokerUser;
+
+    @Value("${activemq.broker-password}")
+    private String brokerPassword;
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
-        return new ActiveMQConnectionFactory("admin", "admin", "tcp://192.168.242.130:61616");
+        return new ActiveMQConnectionFactory(brokerUser, brokerPassword, brokerUrl);
     }
 
     @Bean
@@ -31,6 +47,20 @@ public class Application {
         configurer.configure(factory, activeMQConnectionFactory);
         // You could still override some of Boot's default if necessary.
         return factory;
+    }
+
+    @Bean
+    public DiscoveryService discoveryService(OSDetectionService osDetectionService) throws EbadConfigurationException {
+        switch (osDetectionService.osType()){
+            case UNIX:
+                LOGGER.info("I run on UNIX");
+                return new UnixDiscoveryService();
+            case WINDOWS:
+                LOGGER.info("I run on WINDOWS");
+                return new WindowsDiscoveryService();
+            default:
+                throw new EbadConfigurationException();
+        }
     }
 
     @Bean // Serialize message content to json using TextMessage
