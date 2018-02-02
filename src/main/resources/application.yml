@@ -1,3 +1,7 @@
 ebad:
   environment: DEV
   discover:
+    windows:
+      home: /
+      batch: /UN/DOSSIER/BATCH/
+    unix-app: /UN/DOSSIER/BATCH/

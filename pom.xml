@@ -37,6 +37,13 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
+        <!-- Apache UTILS -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
         <!-- Getter and Setter free -->
         <dependency>
             <groupId>org.projectlombok</groupId>
